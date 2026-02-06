@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>For You 💕</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===================== -->
+<!-- PAGE 1: THE QUESTION  -->
+<!-- ===================== -->
+<div id="page-question" class="page active">
+  <div class="question-container">
+    <!-- Bear character - changes expression on each "No" click -->
+    <div class="bear-wrapper">
+      <img id="bear-img" src="" alt="bear" class="bear-img">
+    </div>
+
+    <h1 class="question-text">Will you be my Valentine? 💘</h1>
+
+    <div class="buttons-row">
+      <button id="btn-yes" class="btn btn-yes" onclick="handleYes()">Yes</button>
+      <button id="btn-no" class="btn btn-no" onclick="handleNo()">No</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== -->
+<!-- PAGE 2: CELEBRATION   -->
+<!-- ===================== -->
+<div id="page-celebrate" class="page">
+
+  <!-- Floating decorations -->
+  <div class="floating-deco" id="floatingDeco"></div>
+
+  <!-- Hero section after saying Yes -->
+  <section class="section hero-section">
+    <div class="hero-bear">
+      <img src="" alt="happy bear" id="hero-bear-img" class="bear-img-large">
+    </div>
+    <h1 class="hero-title">Yay!!! 💖🎉</h1>
+    <p class="hero-sub">I knew you'd say yes 🥰</p>
+    <div class="scroll-hint">
+      <span>Scroll down</span>
+      <div class="scroll-arrow">↓</div>
+    </div>
+  </section>
+
+  <!-- Photo Carousel Section -->
+  <section class="section photos-section">
+    <h2 class="section-title">Our Moments</h2>
+    <p class="section-sub">some of my favorites ✨</p>
+
+    <div class="carousel-container">
+      <div class="carousel" id="carousel">
+        <div class="carousel-slide"><img src="images/photo1.jpg" alt="Photo 1"></div>
+        <div class="carousel-slide"><img src="images/photo2.jpg" alt="Photo 2"></div>
+        <div class="carousel-slide"><img src="images/photo3.jpg" alt="Photo 3"></div>
+        <div class="carousel-slide"><img src="images/photo4.jpg" alt="Photo 4"></div>
+        <div class="carousel-slide"><img src="images/photo5.jpg" alt="Photo 5"></div>
+        <div class="carousel-slide"><img src="images/photo6.jpg" alt="Photo 6"></div>
+        <div class="carousel-slide"><img src="images/photo7.jpg" alt="Photo 7"></div>
+        <div class="carousel-slide"><img src="images/photo8.jpg" alt="Photo 8"></div>
+        <div class="carousel-slide"><img src="images/photo9.jpg" alt="Photo 9"></div>
+        <div class="carousel-slide"><img src="images/photo10.jpg" alt="Photo 10"></div>
+        <div class="carousel-slide"><img src="images/photo11.jpg" alt="Photo 11"></div>
+        <div class="carousel-slide"><img src="images/photo12.jpg" alt="Photo 12"></div>
+        <div class="carousel-slide"><img src="images/photo13.jpg" alt="Photo 13"></div>
+        <div class="carousel-slide"><img src="images/photo14.jpg" alt="Photo 14"></div>
+      </div>
+
+      <!-- Carousel dots -->
+      <div class="carousel-dots" id="carouselDots"></div>
+    </div>
+  </section>
+
+  <!-- Love Letter / Messages Section -->
+  <section class="section letter-section">
+    <div class="letter-card">
+      <div class="letter-bear">
+        <img src="" alt="love bear" id="letter-bear-img" class="bear-img-medium">
+      </div>
+
+      <!-- 
+        EDIT: Ganti tulisan-tulisan di bawah ini sesuai keinginan kamu.
+        Tambahin atau kurangin <div class="letter-block"> sesukanya.
+      -->
+      <div class="letter-block">
+        <h3>Hey kamu... 👋</h3>
+        <p>
+          Ini mungkin cheesy banget, tapi aku mau bilang sesuatu yang udah lama aku pengen bilang...
+        </p>
+      </div>
+
+      <div class="letter-divider">♡</div>
+
+      <div class="letter-block">
+        <h3>Kamu tuh... ✨</h3>
+        <p>
+          Orang paling random yang pernah aku kenal. Tapi somehow, randomness kamu itu yang bikin hari-hari aku jadi seru.
+        </p>
+      </div>
+
+      <div class="letter-divider">♡</div>
+
+      <div class="letter-block">
+        <h3>Hal yang aku suka dari kamu 💕</h3>
+        <p>
+          Cara kamu ketawa yang heboh. Cara kamu marah yang lucu. Cara kamu sayang sama orang-orang di sekitar kamu. Everything.
+        </p>
+      </div>
+
+      <div class="letter-divider">♡</div>
+
+      <div class="letter-block">
+        <h3>Dan yang paling penting... 🤍</h3>
+        <p>
+          Aku bersyukur banget bisa kenal kamu, bisa ada di hidup kamu, dan semoga... bisa terus ada di sisi kamu.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Fun Facts / Cute Section with bear animations -->
+  <section class="section fun-section">
+    <h2 class="section-title">Fun Facts About Us</h2>
+    <p class="section-sub">yang bikin kita... kita 🐻</p>
+
+    <div class="fun-cards">
+      <!-- EDIT: Ganti isi kartu-kartu ini -->
+      <div class="fun-card" data-animate>
+        <div class="fun-emoji">🎮</div>
+        <p>Kita berdua sama-sama competitive kalau main game</p>
+      </div>
+      <div class="fun-card" data-animate>
+        <div class="fun-emoji">🍜</div>
+        <p>Makanan favorit kita: apapun yang penting bareng</p>
+      </div>
+      <div class="fun-card" data-animate>
+        <div class="fun-emoji">😂</div>
+        <p>Ketawa bareng sampai perut sakit itu obat terbaik</p>
+      </div>
+      <div class="fun-card" data-animate>
+        <div class="fun-emoji">🌙</div>
+        <p>Late night talks yang nggak ada habisnya</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Questions / Form Section -->
+  <section class="section form-section">
+    <div class="form-wrapper">
+      <div class="form-bear">
+        <img src="" alt="curious bear" id="form-bear-img" class="bear-img-medium">
+      </div>
+
+      <h2 class="section-title">Satu hal lagi... 📝</h2>
+      <p class="section-sub">Isi dulu dong biar aku simpan 🥰</p>
+
+      <form id="valentineForm" class="valentine-form" onsubmit="handleFormSubmit(event)">
+        <div class="form-group">
+          <label for="nameYou">Nama kamu</label>
+          <input type="text" id="nameYou" placeholder="Siapa nama kamu?" required>
+          <small class="hint-text" id="nameYouHint" style="display:none; color:#f44336;">Hint: coba cek kontak kamu 😉</small>
+        </div>
+
+        <div class="form-group">
+          <label for="nameMe">Nama aku</label>
+          <input type="text" id="nameMe" placeholder="Siapa nama aku?" required>
+        </div>
+
+        <div class="form-group">
+          <label for="dobMe">Tanggal lahir Ipang</label>
+          <input type="date" id="dobMe" required>
+          <small class="hint-text" id="dobMeHint" style="display:none; color:#f44336;"></small>
+        </div>
+
+        <!-- 
+          EDIT: Tambahin pertanyaan lain di sini kalau mau.
+          Copy paste <div class="form-group">...</div> dan ganti isinya.
+        -->
+        <div class="form-group">
+          <label for="favMemory">Momen favorit kita?</label>
+          <textarea id="favMemory" placeholder="Ceritain dong..." rows="3" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="message">Pesan buat aku 💌</label>
+          <textarea id="message" placeholder="Tulis apa aja..." rows="3" required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-submit">Kirim 💌</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Thank You / Final Section -->
+  <section class="section final-section" id="finalSection" style="display:none;">
+    <div class="final-content">
+      <div class="final-bear">
+        <img src="" alt="love bear" id="final-bear-img" class="bear-img-large">
+      </div>
+      <h1 class="final-title">Thank you, <span id="finalName">sayang</span> 💕</h1>
+      <p class="final-message">
+        Aku sayang kamu lebih dari yang kamu tau. <br>
+        Happy Valentine's Day! 🤍
+      </p>
+      <div class="final-quote">you had me at hello</div>
+    </div>
+  </section>
+
+  <!-- When You Feel... Section -->
+  <section class="section mood-section" id="moodSection" style="display:none;">
+    <h2 class="section-title">When You Feel...</h2>
+    <p class="section-sub">click one, whenever you need it 🤍</p>
+
+    <div class="mood-cards">
+      <button class="mood-card" onclick="openMood('tired')">
+        <span class="mood-emoji">💤</span>
+        <span class="mood-label">when you feel tired</span>
+      </button>
+      <button class="mood-card" onclick="openMood('sad')">
+        <span class="mood-emoji">😔</span>
+        <span class="mood-label">when you feel sad</span>
+      </button>
+      <button class="mood-card" onclick="openMood('toomuch')">
+        <span class="mood-emoji">😣</span>
+        <span class="mood-label">when everything feels too much</span>
+      </button>
+      <button class="mood-card" onclick="openMood('frustrated')">
+        <span class="mood-emoji">😤</span>
+        <span class="mood-label">when you're frustrated</span>
+      </button>
+      <button class="mood-card" onclick="openMood('insecure')">
+        <span class="mood-emoji">🤍</span>
+        <span class="mood-label">when you feel insecure</span>
+      </button>
+      <button class="mood-card" onclick="openMood('missme')">
+        <span class="mood-emoji">🥺</span>
+        <span class="mood-label">when you miss me</span>
+      </button>
+      <button class="mood-card" onclick="openMood('cantsleep')">
+        <span class="mood-emoji">🌙</span>
+        <span class="mood-label">when you can't sleep</span>
+      </button>
+      <button class="mood-card" onclick="openMood('heavy')">
+        <span class="mood-emoji">☀️</span>
+        <span class="mood-label">when you wake up feeling heavy</span>
+      </button>
+    </div>
+  </section>
+
+</div>
+
+<!-- Mood Modal Overlay -->
+<div class="mood-overlay" id="moodOverlay" onclick="closeMood(event)">
+  <div class="mood-modal">
+    <button class="mood-close" onclick="closeMood()">&times;</button>
+    <img src="" alt="bear" id="mood-bear-img" class="bear-img-medium">
+    <p class="mood-message" id="moodMessage"></p>
+  </div>
+</div>
+
+<!-- Background Music -->
+<!-- EDIT: Ganti src dengan file musik kamu. Taruh di folder /public/music/ -->
+<audio id="bgMusic" loop preload="auto">
+  <source src="music/SIVIA - ARE YOU MY VALENTINE _ (Official Lyric Video) [vpjrhEj16VQ].mp3" type="audio/mpeg">
+</audio>
+
+<!-- Music Toggle Button -->
+<button class="music-toggle" id="musicToggle" onclick="toggleMusic()" style="display:none;">
+  <span id="musicIcon">🔇</span>
+</button>
+
+<script src="script.js"></script>
+</body>
+</html>
