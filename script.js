@@ -381,15 +381,12 @@ function launchConfetti() {
 }
 
 /* ================================ */
-/* MUSIC + VIDEO AUDIO MANAGEMENT   */
+/* MUSIC (background soundtrack)    */
 /* ================================ */
-let musicWasPlaying = false;
-
 function startMusic() {
   const audio = document.getElementById('bgMusic');
   audio.volume = 0.5;
 
-  // Try autoplay
   const playPromise = audio.play();
   if (playPromise !== undefined) {
     playPromise.then(() => {
@@ -400,40 +397,6 @@ function startMusic() {
       updateMusicIcon();
     });
   }
-
-  // Setup video-music coordination
-  setupVideoAudioHandling();
-}
-
-function setupVideoAudioHandling() {
-  const video = document.querySelector('.video-player');
-  const audio = document.getElementById('bgMusic');
-  if (!video) return;
-
-  // Pause music when video plays
-  video.addEventListener('play', () => {
-    if (musicPlaying) {
-      musicWasPlaying = true;
-      audio.pause();
-      musicPlaying = false;
-      updateMusicIcon();
-    }
-  });
-
-  // Resume music when video pauses or ends
-  video.addEventListener('pause', resumeMusicAfterVideo);
-  video.addEventListener('ended', resumeMusicAfterVideo);
-}
-
-function resumeMusicAfterVideo() {
-  if (musicWasPlaying) {
-    const audio = document.getElementById('bgMusic');
-    audio.play().then(() => {
-      musicPlaying = true;
-      musicWasPlaying = false;
-      updateMusicIcon();
-    }).catch(() => {});
-  }
 }
 
 function toggleMusic() {
@@ -442,7 +405,6 @@ function toggleMusic() {
   if (musicPlaying) {
     audio.pause();
     musicPlaying = false;
-    musicWasPlaying = false; // User explicitly turned off
     updateMusicIcon();
   } else {
     audio.play().then(() => {
