@@ -210,6 +210,9 @@ function handleYes() {
     // Init scroll animations
     initScrollAnimations();
 
+    // Init video autoplay on scroll
+    initVideoAutoplay();
+
     // Try to play music
     startMusic();
 
@@ -378,8 +381,10 @@ function launchConfetti() {
 }
 
 /* ================================ */
-/* MUSIC                            */
+/* MUSIC + VIDEO AUDIO MANAGEMENT   */
 /* ================================ */
+let musicWasPlaying = false;
+
 function startMusic() {
   const audio = document.getElementById('bgMusic');
   audio.volume = 0.5;
@@ -391,10 +396,43 @@ function startMusic() {
       musicPlaying = true;
       updateMusicIcon();
     }).catch(() => {
-      // Autoplay blocked — will play on next user interaction
       musicPlaying = false;
       updateMusicIcon();
     });
+  }
+
+  // Setup video-music coordination
+  setupVideoAudioHandling();
+}
+
+function setupVideoAudioHandling() {
+  const video = document.querySelector('.video-player');
+  const audio = document.getElementById('bgMusic');
+  if (!video) return;
+
+  // Pause music when video plays
+  video.addEventListener('play', () => {
+    if (musicPlaying) {
+      musicWasPlaying = true;
+      audio.pause();
+      musicPlaying = false;
+      updateMusicIcon();
+    }
+  });
+
+  // Resume music when video pauses or ends
+  video.addEventListener('pause', resumeMusicAfterVideo);
+  video.addEventListener('ended', resumeMusicAfterVideo);
+}
+
+function resumeMusicAfterVideo() {
+  if (musicWasPlaying) {
+    const audio = document.getElementById('bgMusic');
+    audio.play().then(() => {
+      musicPlaying = true;
+      musicWasPlaying = false;
+      updateMusicIcon();
+    }).catch(() => {});
   }
 }
 
@@ -404,6 +442,7 @@ function toggleMusic() {
   if (musicPlaying) {
     audio.pause();
     musicPlaying = false;
+    musicWasPlaying = false; // User explicitly turned off
     updateMusicIcon();
   } else {
     audio.play().then(() => {
@@ -416,6 +455,28 @@ function toggleMusic() {
 function updateMusicIcon() {
   const icon = document.getElementById('musicIcon');
   icon.textContent = musicPlaying ? '🔊' : '🔇';
+}
+
+/* ================================ */
+/* VIDEO AUTOPLAY ON SCROLL         */
+/* ================================ */
+function initVideoAutoplay() {
+  const video = document.querySelector('.video-player');
+  if (!video) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        video.play().catch(() => {});
+      } else {
+        if (!video.paused) {
+          video.pause();
+        }
+      }
+    });
+  }, { threshold: 0.5 });
+
+  observer.observe(video);
 }
 
 /* ================================ */
@@ -486,63 +547,17 @@ function handleFormSubmit(event) {
 /* ================================ */
 /* GIFT COUPONS                     */
 /* ================================ */
-async function redeemCoupon(ticketEl) {
-  // Prevent double tap
+function redeemCoupon(ticketEl) {
   if (ticketEl.classList.contains('redeemed')) return;
 
   const couponName = ticketEl.querySelector('.coupon-ticket-name').textContent;
   const couponEmoji = ticketEl.querySelector('.coupon-ticket-emoji').textContent.trim();
   const couponCode = ticketEl.querySelector('.coupon-ticket-code').textContent;
 
-  // Capture the coupon as image BEFORE marking as redeemed
-  const innerEl = ticketEl.querySelector('.coupon-ticket-inner');
+  ticketEl.classList.add('redeemed');
 
-  try {
-    const canvas = await html2canvas(innerEl, {
-      backgroundColor: '#ffffff',
-      scale: 2,
-      borderRadius: 16,
-      useCORS: true,
-    });
-
-    // Convert to blob
-    const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
-    const fileName = `valentine-coupon-${couponCode}.png`;
-    const file = new File([blob], fileName, { type: 'image/png' });
-
-    // Mark as redeemed
-    ticketEl.classList.add('redeemed');
-
-    const shareText = `💌 *Valentine Coupon Redeemed!*\n\n${couponEmoji} ${couponName}\nKode: ${couponCode}\n\nAku mau redeem kupon ini ya! 🥰`;
-
-    // Try Web Share API with image (works great on mobile)
-    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-      await navigator.share({
-        text: shareText,
-        files: [file],
-      });
-    } else {
-      // Fallback: download image + open WhatsApp with text
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = fileName;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-
-      const waMessage = encodeURIComponent(shareText);
-      window.open(`https://wa.me/6282121756880?text=${waMessage}`, '_blank');
-    }
-  } catch (err) {
-    // Mark as redeemed even if capture fails
-    ticketEl.classList.add('redeemed');
-
-    // Fallback to text only
-    const waMessage = encodeURIComponent(
-      `💌 *Valentine Coupon Redeemed!*\n\n${couponEmoji} ${couponName}\n\nAku mau redeem kupon ini ya! 🥰`
-    );
-    window.open(`https://wa.me/6282121756880?text=${waMessage}`, '_blank');
-  }
+  const waMessage = encodeURIComponent(
+    `💌 *Valentine Coupon Redeemed!*\n\n${couponEmoji} ${couponName}\nKode: ${couponCode}\n\nAku mau redeem kupon ini ya! 🥰`
+  );
+  window.open(`https://wa.me/6282121756880?text=${waMessage}`, '_blank');
 }
