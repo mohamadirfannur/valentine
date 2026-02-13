@@ -85,6 +85,7 @@ let musicPlaying = false;
 let touchStartX = 0;
 let touchEndX = 0;
 let isDragging = false;
+let yesCatchable = false;
 
 /* ================================ */
 /* INIT                             */
@@ -98,7 +99,39 @@ document.addEventListener('DOMContentLoaded', () => {
     const img = new Image();
     img.src = src;
   });
+
+  // Make Yes button dodge on hover/touch before it's catchable
+  const btnYes = document.getElementById('btn-yes');
+
+  // Desktop: dodge on mouse enter
+  btnYes.addEventListener('mouseenter', () => {
+    if (!yesCatchable) dodgeYesButton();
+  });
+
+  // Mobile: dodge on touchstart (before click fires)
+  btnYes.addEventListener('touchstart', (e) => {
+    if (!yesCatchable) {
+      e.preventDefault();
+      dodgeYesButton();
+    }
+  }, { passive: false });
 });
+
+function dodgeYesButton() {
+  const btnYes = document.getElementById('btn-yes');
+  const container = document.querySelector('.question-container');
+  const containerRect = container.getBoundingClientRect();
+
+  // Random position within the container bounds
+  const maxX = containerRect.width / 2 - 60;
+  const maxY = containerRect.height / 2 - 30;
+
+  const randomX = (Math.random() - 0.5) * 2 * maxX;
+  const randomY = (Math.random() - 0.5) * 2 * maxY;
+
+  btnYes.classList.add('dodging');
+  btnYes.style.transform = `translate(${randomX}px, ${randomY}px)`;
+}
 
 /* ================================ */
 /* PAGE 1: QUESTION LOGIC           */
@@ -110,7 +143,15 @@ function handleNo() {
   const btnNo = document.getElementById('btn-no');
   const bearImg = document.getElementById('bear-img');
 
-  // Grow Yes button (no cap — keeps growing!)
+  // After 3 No clicks, make Yes button catchable (stop dodging)
+  if (noClickCount >= 3 && !yesCatchable) {
+    yesCatchable = true;
+    btnYes.classList.remove('dodging');
+    btnYes.classList.add('catchable');
+    btnYes.style.transform = 'translate(0, 0)';
+  }
+
+  // Grow Yes button
   const yesPadV = 0.9 + (noClickCount * 0.15);
   const yesPadH = 2.2 + (noClickCount * 0.4);
   const yesFontSize = 1.1 + (noClickCount * 0.18);
@@ -139,6 +180,9 @@ function handleNo() {
 }
 
 function handleYes() {
+  // Block if not catchable yet
+  if (!yesCatchable) return;
+
   // Transition to celebration page
   const pageQuestion = document.getElementById('page-question');
   const pageCelebrate = document.getElementById('page-celebrate');
@@ -267,6 +311,11 @@ function initScrollAnimations() {
     rootMargin: '0px 0px -50px 0px'
   });
 
+  // Observe message card
+  document.querySelectorAll('.message-card').forEach(el => {
+    observer.observe(el);
+  });
+
   // Observe letter blocks
   document.querySelectorAll('.letter-block, .letter-divider').forEach(el => {
     observer.observe(el);
@@ -372,68 +421,6 @@ function updateMusicIcon() {
 /* ================================ */
 /* FORM SUBMISSION                  */
 /* ================================ */
-/* ================================ */
-/* MOOD MESSAGES                    */
-/* ================================ */
-const MOOD_DATA = {
-  tired: {
-    bear: 'love',
-    message: `kamu ga harus kuat terus kok.\nistirahat bentar itu bukan kalah, itu ngerawat diri.\ndunia bisa nunggu, kesehatan kamu engga.`,
-  },
-  sad: {
-    bear: 'please',
-    message: `gapapa kok ngerasa sedih tanpa alasan jelas.\nhati juga bisa capek.\nkamu ga sendirian ngelewatin rasa itu.`,
-  },
-  toomuch: {
-    bear: 'sad',
-    message: `tarik napas pelan dulu ya.\nkamu ga harus beresin semuanya hari ini.\nsatu hal kecil aja cukup.`,
-  },
-  frustrated: {
-    bear: 'flowers',
-    message: `kamu bukan kurang mampu, cuma lagi ketemu hal yang berat aja.\nkamu biasanya juga bisa lewatin kok, pelan-pelan.`,
-  },
-  insecure: {
-    bear: 'love',
-    message: `kamu sering lupa kalau kamu tuh seberharga itu.\norang lain mungkin ga selalu keliatan, tapi bukan berarti kamu kurang.`,
-  },
-  missme: {
-    bear: 'kiss',
-    message: `aku mungkin ga selalu di sebelah kamu,\ntapi kamu ga pernah sendirian di pikiranku.`,
-  },
-  cantsleep: {
-    bear: 'curious',
-    message: `rebahin pikiran kamu juga ya, jangan cuma badan.\nbesok urusannya, malam ini istirahat dulu.`,
-  },
-  heavy: {
-    bear: 'happy',
-    message: `kamu bangun hari ini aja udah hebat.\nga harus langsung semangat, pelan juga boleh.`,
-  },
-};
-
-function openMood(mood) {
-  const data = MOOD_DATA[mood];
-  if (!data) return;
-
-  const overlay = document.getElementById('moodOverlay');
-  const bearImg = document.getElementById('mood-bear-img');
-  const message = document.getElementById('moodMessage');
-
-  setBearImage('mood-bear-img', data.bear);
-  message.textContent = data.message;
-  overlay.classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeMood(event) {
-  if (event && event.target !== event.currentTarget && !event.target.classList.contains('mood-close')) return;
-  const overlay = document.getElementById('moodOverlay');
-  overlay.classList.remove('active');
-  document.body.style.overflow = '';
-}
-
-/* ================================ */
-/* FORM SUBMISSION                  */
-/* ================================ */
 function handleFormSubmit(event) {
   event.preventDefault();
 
@@ -460,7 +447,6 @@ function handleFormSubmit(event) {
   dobMeHint.style.display = 'none';
 
   // Collect all form data
-  const nameMe = document.getElementById('nameMe').value.trim();
   const favMemory = document.getElementById('favMemory').value.trim();
   const message = document.getElementById('message').value.trim();
 
@@ -472,7 +458,6 @@ function handleFormSubmit(event) {
       access_key: '18280a8a-6481-4fee-a039-8989e63fe238',
       subject: 'Valentine Response from ' + nameYou,
       nama_kamu: nameYou,
-      nama_aku: nameMe,
       tanggal_lahir_ipang: dobMe,
       momen_favorit: favMemory || '-',
       pesan: message || '-',
@@ -486,14 +471,78 @@ function handleFormSubmit(event) {
   // Set dynamic content
   document.getElementById('finalName').textContent = nameYou || 'sayang';
 
-  // Hide form, show final + mood section
+  // Hide form, show coupon + final
   formSection.style.display = 'none';
+  document.getElementById('couponSection').style.display = 'flex';
   finalSection.style.display = 'flex';
-  document.getElementById('moodSection').style.display = 'flex';
 
-  // Scroll to final
-  finalSection.scrollIntoView({ behavior: 'smooth' });
+  // Scroll to coupon section
+  document.getElementById('couponSection').scrollIntoView({ behavior: 'smooth' });
 
   // More confetti!
   launchConfetti();
+}
+
+/* ================================ */
+/* GIFT COUPONS                     */
+/* ================================ */
+async function redeemCoupon(ticketEl) {
+  // Prevent double tap
+  if (ticketEl.classList.contains('redeemed')) return;
+
+  const couponName = ticketEl.querySelector('.coupon-ticket-name').textContent;
+  const couponEmoji = ticketEl.querySelector('.coupon-ticket-emoji').textContent.trim();
+  const couponCode = ticketEl.querySelector('.coupon-ticket-code').textContent;
+
+  // Capture the coupon as image BEFORE marking as redeemed
+  const innerEl = ticketEl.querySelector('.coupon-ticket-inner');
+
+  try {
+    const canvas = await html2canvas(innerEl, {
+      backgroundColor: '#ffffff',
+      scale: 2,
+      borderRadius: 16,
+      useCORS: true,
+    });
+
+    // Convert to blob
+    const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+    const fileName = `valentine-coupon-${couponCode}.png`;
+    const file = new File([blob], fileName, { type: 'image/png' });
+
+    // Mark as redeemed
+    ticketEl.classList.add('redeemed');
+
+    const shareText = `💌 *Valentine Coupon Redeemed!*\n\n${couponEmoji} ${couponName}\nKode: ${couponCode}\n\nAku mau redeem kupon ini ya! 🥰`;
+
+    // Try Web Share API with image (works great on mobile)
+    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({
+        text: shareText,
+        files: [file],
+      });
+    } else {
+      // Fallback: download image + open WhatsApp with text
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      const waMessage = encodeURIComponent(shareText);
+      window.open(`https://wa.me/6282121756880?text=${waMessage}`, '_blank');
+    }
+  } catch (err) {
+    // Mark as redeemed even if capture fails
+    ticketEl.classList.add('redeemed');
+
+    // Fallback to text only
+    const waMessage = encodeURIComponent(
+      `💌 *Valentine Coupon Redeemed!*\n\n${couponEmoji} ${couponName}\n\nAku mau redeem kupon ini ya! 🥰`
+    );
+    window.open(`https://wa.me/6282121756880?text=${waMessage}`, '_blank');
+  }
 }

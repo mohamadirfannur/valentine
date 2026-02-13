@@ -52,6 +52,30 @@
     </div>
   </section>
 
+  <!-- Valentine Message Section -->
+  <section class="section message-section">
+    <div class="message-card">
+      <h2 class="message-title">Happy Valentine 💕</h2>
+      <p class="message-body">
+        Thank you for being the calm in my chaos and the soft place I always want to come back to.
+        I'm really grateful for you — today and every day.
+      </p>
+    </div>
+  </section>
+
+  <!-- Video Section -->
+  <section class="section video-section">
+    <h2 class="section-title">A Little Something...</h2>
+    <p class="section-sub">press play 🤍</p>
+    <div class="video-container">
+      <!-- EDIT: Ganti src dengan video kamu. Taruh di folder /videos/ -->
+      <video id="valentineVideo" controls playsinline preload="metadata">
+        <source src="videos/video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </section>
+
   <!-- Photo Carousel Section -->
   <section class="section photos-section">
     <h2 class="section-title">Our Moments</h2>
@@ -167,12 +191,7 @@
         <div class="form-group">
           <label for="nameYou">Nama kamu</label>
           <input type="text" id="nameYou" placeholder="Siapa nama kamu?" required>
-          <small class="hint-text" id="nameYouHint" style="display:none; color:#f44336;">Hint: coba cek kontak kamu 😉</small>
-        </div>
-
-        <div class="form-group">
-          <label for="nameMe">Nama aku</label>
-          <input type="text" id="nameMe" placeholder="Siapa nama aku?" required>
+          <small class="hint-text" id="nameYouHint" style="display:none; color:#f44336;">Hint: coba nama kamu di kontak aku apa 😉</small>
         </div>
 
         <div class="form-group">
@@ -200,6 +219,118 @@
     </div>
   </section>
 
+  <!-- Gift Coupon Section -->
+  <section class="section coupon-section" id="couponSection" style="display:none;">
+    <h2 class="section-title">Gift Coupons 🎁</h2>
+    <p class="section-sub">tap kupon untuk redeem ke WhatsApp 🤍</p>
+
+    <div class="coupon-list">
+
+      <div class="coupon-ticket" onclick="redeemCoupon(this)">
+        <div class="coupon-ticket-inner">
+          <div class="coupon-ticket-header"><span>Valentine Coupon</span></div>
+          <div class="coupon-ticket-body">
+            <div class="coupon-ticket-emoji">🤗</div>
+            <div class="coupon-ticket-name">Peluk Sepuasnya</div>
+            <div class="coupon-ticket-desc">Satu pelukan hangat, kapanpun kamu butuh</div>
+          </div>
+          <div class="coupon-ticket-tear"></div>
+          <div class="coupon-ticket-footer">
+            <span class="coupon-ticket-valid">Valid: Forever 💕</span>
+            <span class="coupon-ticket-code">#VC-001</span>
+          </div>
+        </div>
+        <div class="coupon-ticket-action">Tap to Redeem 💌</div>
+      </div>
+
+      <div class="coupon-ticket" onclick="redeemCoupon(this)">
+        <div class="coupon-ticket-inner">
+          <div class="coupon-ticket-header"><span>Valentine Coupon</span></div>
+          <div class="coupon-ticket-body">
+            <div class="coupon-ticket-emoji">🐠</div>
+            <div class="coupon-ticket-name">Aquarium Date</div>
+            <div class="coupon-ticket-desc">Date liat ikan bareng sambil gandengan</div>
+          </div>
+          <div class="coupon-ticket-tear"></div>
+          <div class="coupon-ticket-footer">
+            <span class="coupon-ticket-valid">Valid: Forever 💕</span>
+            <span class="coupon-ticket-code">#VC-002</span>
+          </div>
+        </div>
+        <div class="coupon-ticket-action">Tap to Redeem 💌</div>
+      </div>
+
+      <div class="coupon-ticket" onclick="redeemCoupon(this)">
+        <div class="coupon-ticket-inner">
+          <div class="coupon-ticket-header"><span>Valentine Coupon</span></div>
+          <div class="coupon-ticket-body">
+            <div class="coupon-ticket-emoji">☕</div>
+            <div class="coupon-ticket-name">Voucher Kopi</div>
+            <div class="coupon-ticket-desc">Coffee date di cafe favorit kamu, aku yang traktir</div>
+          </div>
+          <div class="coupon-ticket-tear"></div>
+          <div class="coupon-ticket-footer">
+            <span class="coupon-ticket-valid">Valid: Forever 💕</span>
+            <span class="coupon-ticket-code">#VC-003</span>
+          </div>
+        </div>
+        <div class="coupon-ticket-action">Tap to Redeem 💌</div>
+      </div>
+
+      <div class="coupon-ticket" onclick="redeemCoupon(this)">
+        <div class="coupon-ticket-inner">
+          <div class="coupon-ticket-header"><span>Valentine Coupon</span></div>
+          <div class="coupon-ticket-body">
+            <div class="coupon-ticket-emoji">🌍</div>
+            <div class="coupon-ticket-name">Jalan-Jalan Kemanapun</div>
+            <div class="coupon-ticket-desc">Kita jalan kemanapun kamu mau, aku temenin</div>
+          </div>
+          <div class="coupon-ticket-tear"></div>
+          <div class="coupon-ticket-footer">
+            <span class="coupon-ticket-valid">Valid: Forever 💕</span>
+            <span class="coupon-ticket-code">#VC-004</span>
+          </div>
+        </div>
+        <div class="coupon-ticket-action">Tap to Redeem 💌</div>
+      </div>
+
+      <div class="coupon-ticket" onclick="redeemCoupon(this)">
+        <div class="coupon-ticket-inner">
+          <div class="coupon-ticket-header"><span>Valentine Coupon</span></div>
+          <div class="coupon-ticket-body">
+            <div class="coupon-ticket-emoji">🤍</div>
+            <div class="coupon-ticket-name">Aku Nemenin 3 Hari</div>
+            <div class="coupon-ticket-desc">3 hari full aku ada buat kamu, no matter what</div>
+          </div>
+          <div class="coupon-ticket-tear"></div>
+          <div class="coupon-ticket-footer">
+            <span class="coupon-ticket-valid">Valid: Forever 💕</span>
+            <span class="coupon-ticket-code">#VC-005</span>
+          </div>
+        </div>
+        <div class="coupon-ticket-action">Tap to Redeem 💌</div>
+      </div>
+
+      <div class="coupon-ticket" onclick="redeemCoupon(this)">
+        <div class="coupon-ticket-inner">
+          <div class="coupon-ticket-header"><span>Valentine Coupon</span></div>
+          <div class="coupon-ticket-body">
+            <div class="coupon-ticket-emoji">🧸</div>
+            <div class="coupon-ticket-name">Beli 2 Pop Mart</div>
+            <div class="coupon-ticket-desc">Pilih 2 Pop Mart yang kamu mau, aku beliin</div>
+          </div>
+          <div class="coupon-ticket-tear"></div>
+          <div class="coupon-ticket-footer">
+            <span class="coupon-ticket-valid">Valid: Forever 💕</span>
+            <span class="coupon-ticket-code">#VC-006</span>
+          </div>
+        </div>
+        <div class="coupon-ticket-action">Tap to Redeem 💌</div>
+      </div>
+
+    </div>
+  </section>
+
   <!-- Thank You / Final Section -->
   <section class="section final-section" id="finalSection" style="display:none;">
     <div class="final-content">
@@ -215,56 +346,6 @@
     </div>
   </section>
 
-  <!-- When You Feel... Section -->
-  <section class="section mood-section" id="moodSection" style="display:none;">
-    <h2 class="section-title">When You Feel...</h2>
-    <p class="section-sub">click one, whenever you need it 🤍</p>
-
-    <div class="mood-cards">
-      <button class="mood-card" onclick="openMood('tired')">
-        <span class="mood-emoji">💤</span>
-        <span class="mood-label">when you feel tired</span>
-      </button>
-      <button class="mood-card" onclick="openMood('sad')">
-        <span class="mood-emoji">😔</span>
-        <span class="mood-label">when you feel sad</span>
-      </button>
-      <button class="mood-card" onclick="openMood('toomuch')">
-        <span class="mood-emoji">😣</span>
-        <span class="mood-label">when everything feels too much</span>
-      </button>
-      <button class="mood-card" onclick="openMood('frustrated')">
-        <span class="mood-emoji">😤</span>
-        <span class="mood-label">when you're frustrated</span>
-      </button>
-      <button class="mood-card" onclick="openMood('insecure')">
-        <span class="mood-emoji">🤍</span>
-        <span class="mood-label">when you feel insecure</span>
-      </button>
-      <button class="mood-card" onclick="openMood('missme')">
-        <span class="mood-emoji">🥺</span>
-        <span class="mood-label">when you miss me</span>
-      </button>
-      <button class="mood-card" onclick="openMood('cantsleep')">
-        <span class="mood-emoji">🌙</span>
-        <span class="mood-label">when you can't sleep</span>
-      </button>
-      <button class="mood-card" onclick="openMood('heavy')">
-        <span class="mood-emoji">☀️</span>
-        <span class="mood-label">when you wake up feeling heavy</span>
-      </button>
-    </div>
-  </section>
-
-</div>
-
-<!-- Mood Modal Overlay -->
-<div class="mood-overlay" id="moodOverlay" onclick="closeMood(event)">
-  <div class="mood-modal">
-    <button class="mood-close" onclick="closeMood()">&times;</button>
-    <img src="" alt="bear" id="mood-bear-img" class="bear-img-medium">
-    <p class="mood-message" id="moodMessage"></p>
-  </div>
 </div>
 
 <!-- Background Music -->
@@ -278,6 +359,7 @@
   <span id="musicIcon">🔇</span>
 </button>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
