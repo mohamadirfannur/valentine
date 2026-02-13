@@ -397,6 +397,22 @@ function startMusic() {
       updateMusicIcon();
     });
   }
+
+  // Safari kills bg audio when video ends/loops — detect and recover
+  audio.addEventListener('pause', () => {
+    if (musicPlaying) {
+      // Music was supposed to be playing — Safari killed it
+      setTimeout(() => {
+        audio.play().then(() => {
+          musicPlaying = true;
+          updateMusicIcon();
+        }).catch(() => {
+          musicPlaying = false;
+          updateMusicIcon();
+        });
+      }, 100);
+    }
+  });
 }
 
 function toggleMusic() {
