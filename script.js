@@ -429,10 +429,13 @@ function initVideoAutoplay() {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        video.play().catch(() => {});
+        video.play().then(() => {
+          setTimeout(() => { video.muted = false; }, 300);
+        }).catch(() => {});
       } else {
         if (!video.paused) {
           video.pause();
+          video.muted = true;
         }
       }
     });
